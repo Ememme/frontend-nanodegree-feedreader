@@ -23,6 +23,7 @@ $(function() {
     */
     it('all names are defined', function() {
       for (const feed of allFeeds) {
+        expect(feed.name).toBeDefined();
         expect(feed.name.length).not.toBe(0);
       }
     });
@@ -60,12 +61,14 @@ $(function() {
     /* test that ensures when the loadFeed function is called,
     * there is at least a single .entry element within the .feed container.
     */
-    it('should return at least one element in the feed container', function(done) {
-      var feedArray = document.querySelector('.feed');
-      // check if feed array container is not empty
-      expect(feedArray.children.length).toBeGreaterThan(0);
+    it('should return at least one element with the class of .entry in the feed container', function(done) {
+      // select all elements that have .entry class within feed
+      var feedArray = document.querySelectorAll('.feed .entry');
+      // check if resulting array has at least one element
+      expect(feedArray.length).toBeGreaterThan(0);
+      expect(feedArray.length).not.toBeLessThan(1);
       // check if first feed title is not empty
-      expect(feedArray.firstElementChild.innerText.length).not.toBe(0);
+      expect(feedArray[0].innerText.length).not.toBe(0);
       done();
     });
   });
