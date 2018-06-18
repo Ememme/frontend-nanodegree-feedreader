@@ -13,7 +13,7 @@ $(function() {
     it('all URLs are defined', function() {
       allFeeds.forEach(function(feed) {
         expect(feed.url).toBeDefined();
-        expect(feed.url).not.toBe('');
+        expect(feed.url.length).not.toBe(0);
       });
     });
 
@@ -22,10 +22,9 @@ $(function() {
     * and that the name is not empty.
     */
     it('all names are defined', function() {
-      allFeeds.forEach(function(feed) {
-        expect(feed.name).toBeDefined();
-        expect(feed.name).not.toBe('');
-      });
+      for (const feed of allFeeds) {
+        expect(feed.name.length).not.toBe(0);
+      }
     });
   });
 
@@ -62,33 +61,44 @@ $(function() {
     * there is at least a single .entry element within the .feed container.
     */
     it('should return at least one element in the feed container', function(done) {
-      var feedArray = $('.feed');
-      /* QUESTION to the reviewer:
-      which of the methods below is best to check if feed list is not empty?
-      */
-      expect(feedArray).not.toBe(null);
-      expect(document.querySelector('.feed').innerHTML).not.toBe('');
-      expect(feedArray.length).toBeGreaterThan(0);
+      var feedArray = document.querySelector('.feed');
+      // check if feed array container is not empty
+      expect(feedArray.children.length).toBeGreaterThan(0);
+      // check if first feed title is not empty
+      expect(feedArray.firstElementChild.innerText.length).not.toBe(0);
       done();
     });
   });
 
   describe('New Feed Selection', function() {
-    const feedList = document.querySelector('.feed-list');
     let firstFeedHeader;
+    let firstFeed;
+    let secondFeed;
+    let secondFeedHeader;
 
     beforeEach(function(done) {
       loadFeed(2, function() {
-        firstFeedHeader = document.querySelector('.feed .entry').firstElementChild.innerText;
+        firstFeedHeader = document.querySelector('.header-title').innerText;
+        firstFeed = document.querySelector('.feed').firstElementChild.innerText;
+
         // loads new content
         loadFeed(1, done);
+
       });
     });
-    /*Test that ensures when a new feed is loaded by the loadFeed function
-    that the content actually changes*/
 
-    it('updates H2 content when a new feed is loaded', function(done) {
-      secondFeedHeader = document.querySelector('.feed .entry').firstElementChild.innerText;
+    /*Tests if feed content updates when a new feed is loaded by the loadFeed
+    function*/
+    it('updates feed contents when a new feed is loaded', function(done){
+      secondFeed = document.querySelector('.feed').firstElementChild.innerText;
+      expect(secondFeed).not.toBe(firstFeed);
+      done();
+    });
+
+    /*Tests if header title updates when a new feed is loaded by the loadFeed
+    function*/
+    it('updates H2 title content when a new feed is loaded', function(done) {
+      secondFeedHeader = document.querySelector('.header-title').innerText;
       expect(secondFeedHeader).not.toBe(firstFeedHeader);
       done();
     });
