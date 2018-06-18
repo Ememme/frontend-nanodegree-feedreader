@@ -63,7 +63,7 @@ $(function() {
     */
     it('should return at least one element with the class of .entry in the feed container', function(done) {
       // select all elements that have .entry class within feed
-      var feedArray = document.querySelectorAll('.feed .entry');
+      let feedArray = document.querySelectorAll('.feed .entry');
       // check if resulting array has at least one element
       expect(feedArray.length).toBeGreaterThan(0);
       expect(feedArray.length).not.toBeLessThan(1);
